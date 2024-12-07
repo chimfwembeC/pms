@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, List } from 'lucide-react';
+import { Plus, List, ArrowLeft } from 'lucide-react';
 import { useTasks } from '@/lib/hooks';
 import { useStore } from '@/lib/store';
 import TaskItem from './TaskItem';
@@ -28,7 +28,15 @@ export default function TaskPanel() {
     <div className="w-96 border-r flex flex-col bg-gray-50">
       <div className="p-4 border-b bg-white">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold">Tasks</h2>
+          <div className="flex items-center justify-between gap-4">
+          <button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="p-2 hover:bg-gray-100 rounded-md"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+            <h2 className="text-xl font-semibold">Tasks</h2>
+          </div>
           <button
             onClick={() => setIsCreateModalOpen(true)}
             className="p-2 hover:bg-gray-100 rounded-md"

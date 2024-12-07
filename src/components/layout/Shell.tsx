@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Menu, Search } from 'lucide-react';
 import Sidebar from './Sidebar';
 import ProjectList from '../projects/ProjectList';
@@ -6,9 +6,14 @@ import TaskPanel from '../tasks/TaskPanel';
 import DetailPanel from '../tasks/DetailPanel';
 import { useStore } from '@/lib/store';
 
-export default function Shell() {
-  const [sidebarOpen, setSidebarOpen] = React.useState(true);
+export default function Shell({ children }) {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
   const selectedProject = useStore((state) => state.selectedProject);
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
   return (
     <div className="h-screen flex flex-col">
@@ -27,6 +32,8 @@ export default function Shell() {
               <input
                 type="search"
                 placeholder="Search tasks..."
+                value={searchQuery}
+                onChange={handleSearchChange}
                 className="w-full pl-8 pr-4 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -38,14 +45,8 @@ export default function Shell() {
       <div className="flex-1 flex overflow-hidden">
         <Sidebar isOpen={sidebarOpen} />
         <main className="flex-1 flex min-w-0">
-          {!selectedProject ? (
-            <ProjectList />
-          ) : (
-            <>
-              <TaskPanel />
-              <DetailPanel />
-            </>
-          )}
+          {/* Pass the search query down to child components */}
+          {React.cloneElement(children, { searchQuery })}
         </main>
       </div>
     </div>
